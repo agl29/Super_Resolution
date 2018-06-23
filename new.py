@@ -124,8 +124,8 @@ class Net(nn.Module):
 
 	def forward(self, lr_images, hr_images):
 		labels = hr_images
-		hr_images = hr_images / 255.0 - 0.5
-		lr_images = lr_images / 255.0 - 0.5
+		hr_images = hr_images - 0.5
+		lr_images = lr_images - 0.5
 		prior_logits = self.prior_network(hr_images)
 		conditioning_logits = self.conditioning_network(lr_images)
 		return prior_logits, conditioning_logits

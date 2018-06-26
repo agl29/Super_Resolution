@@ -17,6 +17,7 @@ class Net(nn.Module):
 		super(Net, self).__init__()
 		self.conv1 = nn.Conv2d(3, 32, 1, stride=1, padding=0)
 		self.Resconv = nn.Conv2d(32, 32, 3, stride=1, padding=1)
+		self.Batch_norm = nn.BatchNorm2d(32)
 		self.Transconv = nn.ConvTranspose2d(32, 32, 3, stride=2, padding=1, output_padding = 1)
 		self.conv2 = nn.Conv2d(32, 3*256, 1, stride=1, padding=0)
 
@@ -88,16 +89,16 @@ class Net(nn.Module):
 		conditioning_logits = self.conv2(inputs)
 		return conditioning_logits
 	
-	def batch_norm(self, x):
-		bn = nn.BatchNorm2d(x.shape[1], affine=False, track_running_stats=False)
-		return bn(x)
+# 	def batch_norm(self, x):
+# 		bn = nn.BatchNorm2d(x.shape[1], affine=False, track_running_stats=False)
+# 		return bn(x)
 
 	def resnet_block(self, inputs):
 		conv1 = self.Resconv(inputs)
-		bn1 = self.batch_norm(conv1)
+		bn1 = self.Batch_norm(conv1)
 		relu1 = F.relu(bn1)
 		conv2 = self.Resconv(relu1)
-		bn2 = self.batch_norm(conv2)
+		bn2 = self.Batch_norm(conv2)
 		output = inputs + bn2
 		return output
 

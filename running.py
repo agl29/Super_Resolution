@@ -57,7 +57,7 @@ class Net(nn.Module):
 			mask[:, :, :, :] = 1
 
 		weights_shape = [num_outputs, in_channel, kernel_h, kernel_w]
-		weights = torch.empty(weights_shape)
+		weights = torch.empty(weights_shape, requires_grad=True)
 		weights = nn.init.xavier_normal_(weights)
 		weights = weights*torch.from_numpy(mask)
 		return weights
